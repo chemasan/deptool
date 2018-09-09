@@ -1,0 +1,16 @@
+name: curl
+version: 7.61.0
+check:
+  - test -r ${LIBDIR}/libcurl.so
+  - test -r ${INCDIR}/curl/curl.h
+dependencies:
+  - zlib-1.2.11.yaml
+  - openssl-1.1.0i.yaml
+download: https://github.com/curl/curl/releases/download/curl-7_61_0/curl-7.61.0.tar.gz  ${TMPDIR}/curl.tgz
+install:
+  - rm -rf ./*
+  - tar xzf "${TMPDIR}/curl.tgz" && mv ${PKGDIR}/curl-${VERSION}/* ${PKGDIR}/
+  - ./buildconf
+  - ./configure --with-ssl=${PREFIX} --with-zlib=${PREFIX} --prefix=${PREFIX}
+  - make
+  - make install

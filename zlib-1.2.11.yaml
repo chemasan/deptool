@@ -1,0 +1,12 @@
+name: zlib
+version: 1.2.11
+check:
+  - test -r ${LIBDIR}/libz.so
+  - test -r ${INCDIR}/zlib.h
+download: https://github.com/madler/zlib/archive/v1.2.11.tar.gz ${TMPDIR}/libz.tgz
+install: 
+  - rm -rf ./*
+  - tar xzf "${TMPDIR}/libz.tgz" && mv ${PKGDIR}/zlib-${VERSION}/* ${PKGDIR}/
+  - ./configure --prefix=${PREFIX}
+  - make
+  - make install

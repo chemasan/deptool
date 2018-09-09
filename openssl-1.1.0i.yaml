@@ -1,0 +1,12 @@
+name: openssl
+version: 1.1.0i
+check:
+  - test -r ${LIBDIR}/libssl.so
+  - test -r ${INCDIR}/openssl/tls1.h
+download: https://github.com/openssl/openssl/archive/OpenSSL_1_1_0i.tar.gz  ${TMPDIR}/openssl.tgz
+install:
+  - rm -rf ./*
+  - tar xzf "${TMPDIR}/openssl.tgz" && mv ./openssl-OpenSSL_1_1_0i/* . 
+  - ./config --prefix=${PREFIX}
+  - make
+  - make install
