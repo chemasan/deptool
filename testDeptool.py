@@ -29,13 +29,13 @@ def testRecipeDefaultDependencies():
     recipe = Recipe({"name":"test"})
     assert(recipe.dependencies == [])
 
-def testRecipeValidDependencies():
+def testRecipeValidListDependencies():
     recipe = Recipe({"name":"test", "dependencies": ["dep1","dep2"]})
     assert(recipe.dependencies == ["dep1","dep2"])
 
-@raises(ValueError)
-def testRecipeInvalidDependencies():
+def testRecipeValidStrDependencies():
     recipe = Recipe({"name":"test", "dependencies": "blah"})
+    assert(recipe.dependencies == ["blah"] )
 
 def testRecipeDefaultInstall():
     recipe = Recipe({"name":"test"})

@@ -79,6 +79,7 @@ The following environment variables are exported and can be used in by the _chec
  - TMPDIR : The directory path to be use as storage for temporary files. If no destination filename is set for the _download_, downloaded files are stored there. /tmp/deptool by default.
 
 ## TODO
+ - [ ] Custom environment variables in recipes
  - [ ] Improve testing
  - [ ] Refactor of the main and get rid of non-used functions
  - [ ] Command options to set different paths independently
