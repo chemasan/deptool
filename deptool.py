@@ -54,7 +54,7 @@ class Recipe(object):
         if not isinstance(recipeDict, dict):  raise ValueError("Invalid recipe")
         self.name = recipeDict.get("name","")
         if (self.name == ""):  raise ValueError("Invalid name")
-        self.version = recipeDict.get("version","0")
+        self.version = str(recipeDict.get("version","0"))
         self.dependencies = sanitizeStrList( recipeDict.get("dependencies", []) )
         self.install = sanitizeStrList( recipeDict.get("install", []) )
         self.check = sanitizeStrList( recipeDict.get("check", []) )
@@ -119,7 +119,7 @@ def run(commands):
 
 def installDeps(dependencies, config):
     for dependency in dependencies:
-        print "Installing dependency '{}'"
+        print "Installing dependency '{}'".format(dependency)
         result = subprocess.call([config.exe, "--projectdir", config.projectdir, dependency])
         if result != 0: raise FailedRecipeError("Failed to run dependency recype '{}'".format(dependency))
         print "Dependency '{}' installed successfully"
@@ -155,7 +155,7 @@ class CmdConfig(object):
         self.libDir = "{}/lib".format(self.prefix)
         self.incDir = "{}/include".format(self.prefix)
         self.tmpDir = "/tmp/deptool"
-        self.cacheDir = "{}/var/lib/cache/deptool".format(self.prefix)
+        self.cacheDir = "{}/var/cache/deptool".format(self.prefix)
         self.pkgDir = None
         self.cwd = os.getcwd()
         self.exe = os.path.realpath(__file__)
