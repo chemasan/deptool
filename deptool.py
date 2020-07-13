@@ -63,7 +63,7 @@ class Recipe(object):
     @staticmethod
     def loadFile(filePath):
         with open(filePath) as recipeFile:
-            yamlRecipe = yaml.load(recipeFile)
+            yamlRecipe = yaml.safe_load(recipeFile)
         return Recipe(yamlRecipe)
 
 class FailedCommandError(RuntimeError):
@@ -100,7 +100,7 @@ def ensureDirs(cmdconfig):
     createDir(cmdconfig.pkgDir)
 
 def retrieveUrl(url, filename):
-    response = requests.get(url, stream=True)
+    response = requests.get(url, stream=True, headers={"Accept-Encoding": "identity"})
     if response.status_code != 200: raise RuntimeError("Server returned code '{}'".format(response.status_code))
     with open(filename,"wb") as f:  shutil.copyfileobj(response.raw,f)
 
