@@ -84,3 +84,5 @@ The following environment variables are exported and can be used in by the _chec
  - [ ] Refactor of the main and get rid of non-used functions
  - [ ] Command options to set different paths independently
  - [ ] Scripts to publish releases
+ - [ ] Dependencies file references are relative to the current recipe path
+ - [ ] Option to reduce the output
