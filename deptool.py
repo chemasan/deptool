@@ -49,6 +49,15 @@ def getUrlFileName(url):
     if filename: return filename
     return "noname"
 
+def parseDownload(download):
+    splittedDownload = download.strip().split(" ",1)
+    url = splittedDownload[0]
+    if len(splittedDownload) > 1:  destfile =  expandPath(splittedDownload[1].strip())
+    else: destfile = getUrlFileName(url)
+    if os.path.basename(destfile) == "": destfile = "{}{}".format(destfile,getUrlFileName(url))
+    return url,destfile
+
+
 class Recipe(object):
     def __init__(self, recipeDict):
         if not isinstance(recipeDict, dict):  raise ValueError("Invalid recipe")
@@ -192,10 +201,9 @@ if __name__ == "__main__":
         exit(1)
     os.chdir(cmdconfig.tmpDir)
     for download in recipe.download:
-        splittedDownload = download.strip().split(" ",1)
-        url = splittedDownload[0]
-        if len(splittedDownload) > 1:  destfile =  expandPath(splittedDownload[1].strip())
-        else: destfile = getUrlFileName(url)
+	url,destfile = parseDownload(download)
+	dirname = os.path.dirname(destfile)
+	if dirname != "": createDir(dirname)
         if os.path.exists(destfile): print "File '{}' already downloaded into '{}'. Skipping.".format(url, destfile)
         else: print "Downloading '{}' into '{}'".format(url, destfile)
         retrieveUrl(url, destfile)

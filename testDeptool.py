@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
+import os
 from nose.tools import raises, assert_raises
 from mock import Mock, patch, call
-from deptool import CmdConfig, Recipe, sanitizeStrList, run, installDeps, runRecipe, FailedCommandError, FailedRecipeError, getUrlFileName
+from deptool import CmdConfig, Recipe, sanitizeStrList, run, installDeps, runRecipe, FailedCommandError, FailedRecipeError, getUrlFileName, parseDownload
 
 @raises(ValueError)
 def testRecipeInvalidDict():
@@ -150,3 +151,11 @@ def testGetUrlFileName():
     assert ( "noname" == getUrlFileName("http://something/") )
     assert ( "noname" == getUrlFileName("http://something") )
     assert ( "noname" == getUrlFileName("") )
+
+def testParseDownload():
+    os.environ["MYDIR"] = "/tmp/mydir"
+    assert ( parseDownload("https://example.tld/d/file.tgz") == ("https://example.tld/d/file.tgz","file.tgz") )
+    assert ( parseDownload("https://example.tld/d/") == ("https://example.tld/d/","noname") )
+    assert ( parseDownload("https://example.tld/d/file.tgz myfile.tgz") == ("https://example.tld/d/file.tgz","myfile.tgz") )
+    assert ( parseDownload("https://example.tld/d/file.tgz ${MYDIR}/myfile.tgz") == ("https://example.tld/d/file.tgz","/tmp/mydir/myfile.tgz") )
+    assert ( parseDownload("https://example.tld/d/file.tgz mydir/") == ("https://example.tld/d/file.tgz","mydir/file.tgz") )
