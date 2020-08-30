@@ -129,8 +129,8 @@ def installDeps(dependencies, config):
     for dependency in dependencies:
         print "Installing dependency '{}'".format(dependency)
         result = subprocess.call([config.exe, "--prefix", config.prefix, dependency])
-        if result != 0: raise FailedRecipeError("Failed to run dependency recype '{}'".format(dependency))
-        print "Dependency '{}' installed successfully"
+        if result != 0: raise FailedRecipeError("Failed to run dependency recipe '{}'".format(dependency))
+        print "Dependency '{}' installed successfully".format(dependency)
 
 def runRecipe(recipe):
     try:
