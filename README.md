@@ -23,7 +23,7 @@ This will download the source code of [curl](https://curl.haxx.se/) and its depe
 A project written in c language that makes use of libcurl may be compiled then using the -I and -L optionsand can run by properly setting the LD\_LIBRARY\_PATH environment variable to use dynamic libraries not in /usr/lib or /usr/local/lib:
 ```
 $ gcc -o myproject  myproject.c  -Ibuild/include -Lbuild/lib -lcurl
-$ export LD_LIBRARY_PATH="${CWD}/build/lib:${LD_LIBRARY_PATH}"
+$ export LD_LIBRARY_PATH="${PWD}/build/lib:${LD_LIBRARY_PATH}"
 $ ./myproject
 ```
 
@@ -63,14 +63,13 @@ A recipe has the following properties:
  - **dependencies**: A list of recipe files that is required to be installed before installing the recipe. URL's to the recipes can be used as well. Dependency recipes are ran if the _check_ determines the package is not installed, and they are ran before the _intall_.
  - **install**: A list of commands to run in order to install the software package. It is only ran if the _check_ determined that the package is not installed. It is ran after installing its dependencies. If all the commands return with an exit status 0, it is considered the package has been installed correctly. Otherwise if any command returns with exit status non 0, the execution is aborted and it is considered that the installation failed.
 
-All properties that accept a list (check, download, dependencies, install) may accept an string instead if a single element is going to be set.
+All properties that accept a list (check, download, dependencies, install) may accept an string instead, if a single element is going to be set.
 All elements in _check_ and _install_ lists are executed in different shell processes, with PKGDIR as working directory.
 BINDIR is added to the path so the recipes can use binaries installed by their dependencies.
 The following environment variables are exported and can be used in by the _check_ and _install_ commands, and in the destination filename in _download_:
  - NAME : The package name as set in the recipe's _name_ property.
  - VERSION : The package version as set in the recipe's _version_ property.
- - PROJECTDIR : The project's directory as set by the _--projectdir_ or _-p_ options, or the current working directory as default
- - PREFIX : The prefix path where all the files are installed. ${PROJECTDIR}/build by default.
+ - PREFIX : The prefix path where all the files are installed. ${PWD}/build by default.
  - SRCDIR : The directory path where the sources for all packages are stored. ${PREFIX}/src by default.
  - BINDIR : The directory path where the binaries are installed. ${PREFIX}/bin by default.
  - LIBDIR : The directory path where the libraries are installed. ${PREFIX}/lib by default.
