@@ -79,6 +79,9 @@ The following environment variables are exported and can be used in by the _chec
  - TMPDIR : The directory path to be use as storage for temporary files. If no destination filename is set for the _download_, downloaded files are stored there. /tmp/deptool by default.
 
 ## TODO
+ - [X] --prefix flag to set PREFIX variable
+ - [ ] uninstall option
+ - [X] consider remove the PROJECTDIR variable and --projectdir flag as it seems that PREFIX may be enought
  - [ ] Custom environment variables in recipes
  - [ ] Improve testing
  - [ ] Refactor of the main and get rid of non-used functions
@@ -86,3 +89,4 @@ The following environment variables are exported and can be used in by the _chec
  - [ ] Scripts to publish releases
  - [ ] Dependencies file references are relative to the current recipe path
  - [ ] Option to reduce the output
+ - [ ] Install and uninstall

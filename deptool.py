@@ -85,7 +85,6 @@ def setEnv(cmdconfig, recipe):
     os.environ["NAME"] = recipe.name
     os.environ["PKGNAME"] = recipe.name
     os.environ["VERSION"] = recipe.version
-    os.environ["PROJECTDIR"] = cmdconfig.projectdir
     os.environ["PREFIX"] = cmdconfig.prefix
     os.environ["SRCDIR"] = cmdconfig.srcDir
     os.environ["BINDIR"] = cmdconfig.binDir
@@ -129,7 +128,7 @@ def run(commands):
 def installDeps(dependencies, config):
     for dependency in dependencies:
         print "Installing dependency '{}'".format(dependency)
-        result = subprocess.call([config.exe, "--projectdir", config.projectdir, dependency])
+        result = subprocess.call([config.exe, "--prefix", config.prefix, dependency])
         if result != 0: raise FailedRecipeError("Failed to run dependency recype '{}'".format(dependency))
         print "Dependency '{}' installed successfully"
 
@@ -153,12 +152,11 @@ def runRecipe(recipe):
 
 class CmdConfig(object):
 
-    DEFAULT_PROJECTDIR = os.getcwd()
+    DEFAULT_PREFIX = "{}/build".format(os.getcwd())
 
-    def __init__(self, recipeFile, projectdir=DEFAULT_PROJECTDIR):
-        self.projectdir = projectdir
+    def __init__(self, recipeFile, prefix=DEFAULT_PREFIX):
         self.recipeFile = recipeFile
-        self.prefix = "{}/build".format(projectdir)
+        self.prefix = prefix
         self.srcDir = "{}/src".format(self.prefix)
         self.binDir = "{}/bin".format(self.prefix)
         self.libDir = "{}/lib".format(self.prefix)
@@ -171,10 +169,10 @@ class CmdConfig(object):
 
 def parseCmdConfig():
     parser = argparse.ArgumentParser(description="Dependency resolving tool")
-    parser.add_argument("--projectdir","-p",dest="projectdir",default=CmdConfig.DEFAULT_PROJECTDIR,help="Project Directory")
+    parser.add_argument("--prefix",dest="prefix",default=CmdConfig.DEFAULT_PREFIX,help="Sets the PREFIX environment variable that points to the directory containing all the installed files. Defaults to ${PWD}/build")
     parser.add_argument("recipe",help="Recipe file's path")
     args = parser.parse_args()
-    return CmdConfig(args.recipe, args.projectdir)
+    return CmdConfig(args.recipe, args.prefix)
 
 if __name__ == "__main__":
     cmdconfig = parseCmdConfig()

@@ -129,16 +129,16 @@ def testRunRecipeFailedInstall():
 
 def testInstallDeps():
     dependencies = ["dependency1.yaml","dependency2.yaml"]
-    config = CmdConfig("myrecipe.yaml", "/myproject")
-    expected = [ call([config.exe,"--projectdir",config.projectdir,"dependency1.yaml"]), call([config.exe,"--projectdir",config.projectdir,"dependency2.yaml"]) ]
+    config = CmdConfig("myrecipe.yaml", "/myproject/build")
+    expected = [ call([config.exe,"--prefix",config.prefix,"dependency1.yaml"]), call([config.exe,"--prefix",config.prefix,"dependency2.yaml"]) ]
     with patch("subprocess.call", return_value = 0) as mock:
         installDeps(dependencies, config)
         assert( mock.mock_calls == expected )
 
 def testInstallDepsFail():
     dependencies = ["dependency1.yaml","dependency2.yaml","dependency2.yaml"]
-    config = CmdConfig("myrecipe.yaml", "/myproject")
-    expected = [ call([config.exe,"--projectdir",config.projectdir,"dependency1.yaml"]), call([config.exe,"--projectdir",config.projectdir,"dependency2.yaml"]) ]
+    config = CmdConfig("myrecipe.yaml", "/myproject/build")
+    expected = [ call([config.exe,"--prefix",config.prefix,"dependency1.yaml"]), call([config.exe,"--prefix",config.prefix,"dependency2.yaml"]) ]
     with patch("subprocess.call", side_effect = [0,1]) as mock:
         assert_raises( FailedRecipeError, installDeps, dependencies, config)
         assert( mock.mock_calls == expected )
