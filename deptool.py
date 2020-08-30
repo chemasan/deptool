@@ -37,9 +37,9 @@ def sanitizeStrList(strlist):
     return mylist
 
 def expandPath(path):
-	expanded = os.path.expandvars(path)
-	expanded = os.path.expanduser(expanded)
-	return expanded
+    expanded = os.path.expandvars(path)
+    expanded = os.path.expanduser(expanded)
+    return expanded
 
 def getUrlFileName(url):
     path = re.sub("^https?\:\/\/","",url,1, re.IGNORECASE)
@@ -199,9 +199,9 @@ if __name__ == "__main__":
         exit(1)
     os.chdir(cmdconfig.tmpDir)
     for download in recipe.download:
-	url,destfile = parseDownload(download)
-	dirname = os.path.dirname(destfile)
-	if dirname != "": createDir(dirname)
+        url,destfile = parseDownload(download)
+        dirname = os.path.dirname(destfile)
+        if dirname != "": createDir(dirname)
         if os.path.exists(destfile): print "File '{}' already downloaded into '{}'. Skipping.".format(url, destfile)
         else: print "Downloading '{}' into '{}'".format(url, destfile)
         retrieveUrl(url, destfile)
